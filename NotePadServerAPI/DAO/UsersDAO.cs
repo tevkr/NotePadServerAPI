@@ -8,8 +8,11 @@ namespace NotePadServerAPI.DAO
 {
     public interface IUsersDAO
     {
+        //Returns all users
         List<User> getUsers();
+        //Adds a user to the database
         void addUser(User user);
+        //Deletes a user from the database
         void delUser(int id);
     }
     public class UsersDAO : IUsersDAO
@@ -18,7 +21,7 @@ namespace NotePadServerAPI.DAO
         private List<User> users;
         public UsersDAO()
         {
-            //Пока используем лист, как все будет работать перейдем на бд
+            //In the near future there will be a DB
             users = new List<User>();
             users.Add(new User(USERS_COUNT++, "Vlad"));
             users.Add(new User(USERS_COUNT++, "Petya"));

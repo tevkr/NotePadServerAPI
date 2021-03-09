@@ -24,6 +24,7 @@ namespace NotePadServerAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IUsersDAO, UsersDAO>();
+            services.AddSingleton<IPurchasesDAO, PurchasesDAO>();
             services.AddControllers();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

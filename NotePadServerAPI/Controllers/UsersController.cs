@@ -15,9 +15,11 @@ namespace NotePadServerAPI.Controllers
     [ApiController]
     public class UsersController : Controller
     {
+        private readonly IPurchasesDAO _purchaseDAO;
         private readonly IUsersDAO _userDAO;
-        public UsersController(IUsersDAO userDAO)
+        public UsersController(IPurchasesDAO purchaseDAO, IUsersDAO userDAO)
         {
+            _purchaseDAO = purchaseDAO;
             _userDAO = userDAO;
         }
         /// <summary>
@@ -66,6 +68,7 @@ namespace NotePadServerAPI.Controllers
                 return Json(NotFound("User was not found"));
             }
             Response.StatusCode = (int)HttpStatusCode.NoContent;
+            _purchaseDAO.delUserPurchases(userId);
             _userDAO.delUser(userId);
             return Json(NoContent());
         }
