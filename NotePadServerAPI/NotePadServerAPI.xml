@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NotePadServerAPI</name>
+    </assembly>
+    <members>
+        <member name="M:NotePadServerAPI.Controllers.PurchasesController.getPurchases(System.Int32)">
+            <summary>
+            Returns all user purchases
+            </summary>
+            <response code="200">Returns all user purchases</response>
+            <response code="404">User was not found</response> 
+        </member>
+        <member name="M:NotePadServerAPI.Controllers.PurchasesController.getPurchase(System.Int32,System.Int32)">
+            <summary>
+            Returns a specific user purchase
+            </summary>
+            <response code="200">Returns a specific user purchase</response>
+            <response code="404">Purchase was not found</response> 
+        </member>
+        <member name="M:NotePadServerAPI.Controllers.PurchasesController.addPurchase(System.Int32,NotePadServerAPI.Models.RequestCreators.CreatePurchaseRequest)">
+            <summary>
+            Creates new purchase
+            </summary>
+            <response code="201">The purchase was created</response>
+            <response code="404">User was not found</response> 
+            <response code="400">Bad request</response> 
+        </member>
+        <member name="M:NotePadServerAPI.Controllers.PurchasesController.delPurchase(System.Int32,System.Int32)">
+            <summary>
+            Deletes a purchase
+            </summary>
+            <response code="204">Purchase was deleted</response>
+            <response code="404">Purchase or user was not found</response> 
+        </member>
+        <member name="M:NotePadServerAPI.Controllers.UsersController.userExists(System.Int32)">
+            <summary>
+            Сhecking the user's existence
+            </summary>
+            <param name="userId"></param>
+            <returns>User existence</returns>
+        </member>
+        <member name="M:NotePadServerAPI.Controllers.UsersController.correctUser(NotePadServerAPI.Models.RequestCreators.CreateUserRequest)">
+            <summary>
+            Checking the validity of the user
+            </summary>
+            <param name="user"></param>
+            <returns>Validity of the user</returns>
+        </member>
+        <member name="M:NotePadServerAPI.Controllers.UsersController.getUsers">
+            <summary>
+            Returs all users
+            </summary>
+            <response code="200">Returns all users</response> 
+        </member>
+        <member name="M:NotePadServerAPI.Controllers.UsersController.addUser(NotePadServerAPI.Models.RequestCreators.CreateUserRequest)">
+            <summary>
+            Сreates a new user by name
+            </summary>
+            <response code="201">User was created</response> 
+            <response code="400">Bad request</response> 
+        </member>
+        <member name="M:NotePadServerAPI.Controllers.UsersController.delUser(System.Int32)">
+            <summary>
+            Deletes a user
+            </summary>
+            <response code="204">User was deleted</response> 
+            <response code="404">User was not found</response> 
+        </member>
+    </members>
+</doc>
