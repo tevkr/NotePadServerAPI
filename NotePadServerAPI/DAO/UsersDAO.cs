@@ -1,9 +1,7 @@
 ﻿using NotePadServerAPI.Data;
 using NotePadServerAPI.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace NotePadServerAPI.DAO
 {
@@ -14,18 +12,11 @@ namespace NotePadServerAPI.DAO
         //Adds a user to the database
         void addUser(User user);
         //Deletes a user from the database
-        void delUser(int id);
+        User delUser(int id);
     }
     public class UsersDAO : IUsersDAO
     {
         private readonly NotePadServerAPIDBContext _dbContext;
-        private static int getLastId(NotePadServerAPIDBContext context)
-        {
-            if (context.users.ToList().FirstOrDefault() == null)
-                return 1;
-            else
-                return context.users.ToList().Last().id + 1;
-        }
         public UsersDAO(NotePadServerAPIDBContext dbContext)
         {
             _dbContext = dbContext;
@@ -36,14 +27,15 @@ namespace NotePadServerAPI.DAO
         }
         public void addUser(User user)
         {
-            user.id = getLastId(_dbContext);
             _dbContext.users.Add(user);
             _dbContext.SaveChanges();
         }
-        public void delUser(int id)
+        public User delUser(int id)
         {
-            _dbContext.users.Remove(_dbContext.users.Find(id));
+            var userToDelete = _dbContext.users.Find(id);
+            _dbContext.users.Remove(userToDelete);
             _dbContext.SaveChanges();
+            return userToDelete;
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using NotePadServerAPI.Data;
 using NotePadServerAPI.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace NotePadServerAPI.DAO
 {
@@ -16,72 +14,48 @@ namespace NotePadServerAPI.DAO
         //Adds a purchase to the database
         void addPurchase(Purchase purchase);
         //Deletes a purchase from the database
-        void delPurchase(int userId, int purchaseId);
+        Purchase delPurchase(int userId, int purchaseId);
         //Deletes all user purchases
         void delUserPurchases(int userId);
     }
     public class PurchasesDAO : IPurchasesDAO
     {
         private readonly NotePadServerAPIDBContext _dbContext;
-        private static int getLastId(NotePadServerAPIDBContext context)
-        {
-            if (context.purchases.ToList().FirstOrDefault() == null)
-                return 1;
-            else
-                return context.purchases.ToList().Last().id + 1;
-        }
         public PurchasesDAO(NotePadServerAPIDBContext dbContext)
         {
             _dbContext = dbContext;
         }
         public void addPurchase(Purchase purchase)
         {
-            purchase.id = getLastId(_dbContext);
             _dbContext.purchases.Add(purchase);
             _dbContext.SaveChanges();
         }
-        public void delPurchase(int userId, int purchaseId)
+        public Purchase delPurchase(int userId, int purchaseId)
         {
-            foreach (Purchase p in _dbContext.purchases.ToList())
-            {
-                if (p.userId == userId && p.id == purchaseId)
-                {
-                    _dbContext.purchases.Remove(p);
-                    break;
-                }
-            }
+            var purchaseToDelete = _dbContext.purchases.Where(
+                p => (p.userId == userId && p.id == purchaseId)
+                ).FirstOrDefault();
+            _dbContext.purchases.Remove(purchaseToDelete);
             _dbContext.SaveChanges();
+            return purchaseToDelete;
         }
         public void delUserPurchases(int userId)
         {
-            foreach (Purchase p in _dbContext.purchases.ToList())
-            {
-                if (p.userId == userId)
-                    _dbContext.purchases.Remove(p);
-            }
+            var purchasesToDelete =_dbContext.purchases.Where(
+                p => p.userId == userId).ToList();
+            _dbContext.RemoveRange(purchasesToDelete);
             _dbContext.SaveChanges();
         }
         public Purchase getPurchase(int userId, int purchaseId)
         {
-            foreach (Purchase p in _dbContext.purchases.ToList())
-            {
-                if (p.userId == userId && p.id == purchaseId)
-                {
-                    return p;
-                    break;
-                }
-            }
-            return null;
+            var purchase = _dbContext.purchases.Where(
+                p => (p.userId == userId && p.id == purchaseId)).FirstOrDefault();
+            return purchase;
         }
         public List<Purchase> getPurchases(int userId)
         {
-            List<Purchase> purchases = new List<Purchase>();
-
-            foreach (Purchase p in _dbContext.purchases.ToList())
-            {
-                if (p.userId == userId)
-                    purchases.Add(p);
-            }
+            var purchases = _dbContext.purchases.Where(
+                p => p.userId == userId).ToList();
             return purchases;
         }
     }

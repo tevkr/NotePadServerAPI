@@ -3,11 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NotePadServerAPI.DAO;
 using NotePadServerAPI.Models;
 using NotePadServerAPI.Models.RequestCreators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace NotePadServerAPI.Controllers
 {
@@ -105,10 +101,10 @@ namespace NotePadServerAPI.Controllers
         /// <summary>
         /// Deletes a purchase
         /// </summary>
-        /// <response code="204">Purchase was deleted</response>
+        /// <response code="200">Purchase was deleted</response>
         /// <response code="404">Purchase or user was not found</response> 
         [HttpDelete("{purchaseId}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public JsonResult delPurchase(int userId, int purchaseId)
         {
@@ -122,9 +118,9 @@ namespace NotePadServerAPI.Controllers
                 Response.StatusCode = (int)HttpStatusCode.NotFound;
                 return Json(NotFound("Purchase not found"));
             }
-            _purchaseDAO.delPurchase(userId, purchaseId);
-            Response.StatusCode = (int)HttpStatusCode.NoContent;
-            return Json(NoContent());
+            var deletedPurchase = _purchaseDAO.delPurchase(userId, purchaseId);
+            Response.StatusCode = (int)HttpStatusCode.OK;
+            return Json(Ok(deletedPurchase));
         }
     }
 }

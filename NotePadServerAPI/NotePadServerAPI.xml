@@ -30,7 +30,7 @@
             <summary>
             Deletes a purchase
             </summary>
-            <response code="204">Purchase was deleted</response>
+            <response code="200">Purchase was deleted</response>
             <response code="404">Purchase or user was not found</response> 
         </member>
         <member name="M:NotePadServerAPI.Controllers.UsersController.userExists(System.Int32)">
@@ -64,7 +64,7 @@
             <summary>
             Deletes a user
             </summary>
-            <response code="204">User was deleted</response> 
+            <response code="200">User was deleted</response> 
             <response code="404">User was not found</response> 
         </member>
     </members>

@@ -3,11 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NotePadServerAPI.DAO;
 using NotePadServerAPI.Models;
 using NotePadServerAPI.Models.RequestCreators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace NotePadServerAPI.Controllers
 {
@@ -75,10 +71,10 @@ namespace NotePadServerAPI.Controllers
         /// <summary>
         /// Deletes a user
         /// </summary>
-        /// <response code="204">User was deleted</response> 
+        /// <response code="200">User was deleted</response> 
         /// <response code="404">User was not found</response> 
         [HttpDelete("{userId}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public JsonResult delUser(int userId)
         {
@@ -87,10 +83,10 @@ namespace NotePadServerAPI.Controllers
                 Response.StatusCode = (int)HttpStatusCode.NotFound;
                 return Json(NotFound("User was not found"));
             }
-            Response.StatusCode = (int)HttpStatusCode.NoContent;
+            Response.StatusCode = (int)HttpStatusCode.OK;
             _purchaseDAO.delUserPurchases(userId);
-            _userDAO.delUser(userId);
-            return Json(NoContent());
+            var deletedUser = _userDAO.delUser(userId);
+            return Json(Ok(deletedUser));
         }
     }
 }
