@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
+using NotePadServerAPI.Data;
 
 namespace NotePadServerAPI
 {
@@ -28,8 +30,10 @@ namespace NotePadServerAPI
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IUsersDAO, UsersDAO>();
-            services.AddSingleton<IPurchasesDAO, PurchasesDAO>();
+            services.AddDbContext<NotePadServerAPIDBContext>(options =>
+                options.UseMySQL(Configuration.GetConnectionString("DBConnection")));
+            services.AddTransient<IUsersDAO, UsersDAO>();
+            services.AddTransient<IPurchasesDAO, PurchasesDAO>();
             services.AddControllers();
             services.AddSwaggerGen((options) =>
             {
@@ -57,9 +61,9 @@ namespace NotePadServerAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NotePadServerAPI"));
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NotePadServerAPI"));
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();

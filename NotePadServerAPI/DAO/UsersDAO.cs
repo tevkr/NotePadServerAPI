@@ -1,4 +1,5 @@
-﻿using NotePadServerAPI.Models;
+﻿using NotePadServerAPI.Data;
+using NotePadServerAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,28 +18,32 @@ namespace NotePadServerAPI.DAO
     }
     public class UsersDAO : IUsersDAO
     {
-        private static uint USERS_COUNT;
-        private List<User> users;
-        public UsersDAO()
+        private readonly NotePadServerAPIDBContext _dbContext;
+        private static int getLastId(NotePadServerAPIDBContext context)
         {
-            //In the near future there will be a DB
-            users = new List<User>();
-            users.Add(new User(USERS_COUNT++, "Vlad"));
-            users.Add(new User(USERS_COUNT++, "Petya"));
-            users.Add(new User(USERS_COUNT++, "Vasya"));
+            if (context.users.ToList().FirstOrDefault() == null)
+                return 1;
+            else
+                return context.users.ToList().Last().id + 1;
+        }
+        public UsersDAO(NotePadServerAPIDBContext dbContext)
+        {
+            _dbContext = dbContext;
         }
         public List<User> getUsers()
         {
-            return users;
+            return _dbContext.users.ToList();
         }
         public void addUser(User user)
         {
-            user.id = USERS_COUNT++;
-            users.Add(user);
+            user.id = getLastId(_dbContext);
+            _dbContext.users.Add(user);
+            _dbContext.SaveChanges();
         }
         public void delUser(int id)
         {
-            users.RemoveAll(u => u.id == id);
+            _dbContext.users.Remove(_dbContext.users.Find(id));
+            _dbContext.SaveChanges();
         }
     }
 }

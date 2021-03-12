@@ -2,14 +2,14 @@
 {
     public class User
     {
-        public uint id { get; set; }
+        public int id { get; set; }
         public string name { get; set; }
         public User() { }
         public User(string name)
         {
             this.name = name;
         }
-        public User(uint id, string name)
+        public User(int id, string name)
         {
             this.id = id;
             this.name = name;

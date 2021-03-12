@@ -1,4 +1,5 @@
-﻿using NotePadServerAPI.Models;
+﻿using NotePadServerAPI.Data;
+using NotePadServerAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,39 +22,67 @@ namespace NotePadServerAPI.DAO
     }
     public class PurchasesDAO : IPurchasesDAO
     {
-        private static uint PURCHASES_COUNT;
-        private List<Purchase> purchases;
-        public PurchasesDAO()
+        private readonly NotePadServerAPIDBContext _dbContext;
+        private static int getLastId(NotePadServerAPIDBContext context)
         {
-            //In the near future there will be a DB
-            purchases = new List<Purchase>();
-            DateTime date1 = new DateTime(2015, 7, 20, 18, 30, 25);
-            purchases.Add(new Purchase(0, PURCHASES_COUNT++, date1, "name1", 35.2));
-            purchases.Add(new Purchase(0, PURCHASES_COUNT++, date1, "name2", 22));
-            purchases.Add(new Purchase(2, PURCHASES_COUNT++, date1, "name3", 0.15));
-            purchases.Add(new Purchase(2, PURCHASES_COUNT++, date1, "name4", 1000023));
-            purchases.Add(new Purchase(0, PURCHASES_COUNT++, date1, "name5", 323232));
+            if (context.purchases.ToList().FirstOrDefault() == null)
+                return 1;
+            else
+                return context.purchases.ToList().Last().id + 1;
+        }
+        public PurchasesDAO(NotePadServerAPIDBContext dbContext)
+        {
+            _dbContext = dbContext;
         }
         public void addPurchase(Purchase purchase)
         {
-            purchase.id = PURCHASES_COUNT++;
-            purchases.Add(purchase);
+            purchase.id = getLastId(_dbContext);
+            _dbContext.purchases.Add(purchase);
+            _dbContext.SaveChanges();
         }
         public void delPurchase(int userId, int purchaseId)
         {
-            purchases.RemoveAll(p => (p.id == purchaseId && p.userId == userId));
+            foreach (Purchase p in _dbContext.purchases.ToList())
+            {
+                if (p.userId == userId && p.id == purchaseId)
+                {
+                    _dbContext.purchases.Remove(p);
+                    break;
+                }
+            }
+            _dbContext.SaveChanges();
         }
         public void delUserPurchases(int userId)
         {
-            purchases.RemoveAll(p => p.userId == userId);
+            foreach (Purchase p in _dbContext.purchases.ToList())
+            {
+                if (p.userId == userId)
+                    _dbContext.purchases.Remove(p);
+            }
+            _dbContext.SaveChanges();
         }
         public Purchase getPurchase(int userId, int purchaseId)
         {
-            return purchases.Find(p => (p.id == purchaseId && p.userId == userId));
+            foreach (Purchase p in _dbContext.purchases.ToList())
+            {
+                if (p.userId == userId && p.id == purchaseId)
+                {
+                    return p;
+                    break;
+                }
+            }
+            return null;
         }
         public List<Purchase> getPurchases(int userId)
         {
-            return purchases.FindAll(p => (p.userId == userId));
+            List<Purchase> purchases = new List<Purchase>();
+
+            foreach (Purchase p in _dbContext.purchases.ToList())
+            {
+                if (p.userId == userId)
+                    purchases.Add(p);
+            }
+            return purchases;
         }
     }
 }

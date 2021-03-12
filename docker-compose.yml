@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+   DB:
+     image: mysql
+     environment:
+       MYSQL_ROOT_PASSWORD: 123
+       MYSQL_DATABASE: NotePadDB
+       MYSQL_USER: user
+       MYSQL_PASSWORD: 123
+     volumes:
+       - ./DBfiles:/var/lib/mysql
+       - ./DBScripts:/docker-entrypoint-initdb.d
+     restart: always
+
+   API:
+     depends_on:
+       - DB
+     image: serverimg
+     build:
+      context: .
+     ports:
+       - "8080:80"

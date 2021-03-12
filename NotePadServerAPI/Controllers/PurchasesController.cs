@@ -97,7 +97,7 @@ namespace NotePadServerAPI.Controllers
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json(ValidationProblem());
             }
-            var newPurchase = new Purchase((uint)userId, purchase.purchaseTime, purchase.name, purchase.cost);
+            var newPurchase = new Purchase(userId, purchase.purchaseTime, purchase.name, purchase.cost);
             _purchaseDAO.addPurchase(newPurchase);
             Response.StatusCode = (int)HttpStatusCode.Created;
             return Json(Created($"api/users/{userId}", newPurchase));
