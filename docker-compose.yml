@@ -16,7 +16,7 @@ services:
    API:
      depends_on:
        - DB
-     image: serverimg
+     image: nomxd/serverapiimg
      build:
       context: .
      ports:
