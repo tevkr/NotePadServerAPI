@@ -24,7 +24,8 @@ namespace NotePadServerAPI.Controllers
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>User existence</returns>
-        protected bool userExists(int userId)
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public bool userExists(int userId)
         {
             return _userDAO.getUsers().Find(u => u.id == userId) != null;
         }
@@ -33,7 +34,8 @@ namespace NotePadServerAPI.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <returns>Validity of the user</returns>
-        protected bool correctUser(CreateUserRequest user)
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public bool correctUser(CreateUserRequest user)
         {
             return user.name != null && user.name != "";
         }

@@ -19,21 +19,20 @@ namespace NotePadServerAPI.Controllers
             _purchaseDAO = purchaseDAO;
             _userDAO = userDAO;
         }
-        protected bool userExists(int userId)
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public bool userExists(int userId)
         {
             return _userDAO.getUsers().Find(u => u.id == userId) != null;
         }
-        protected bool correctUser(User user)
-        {
-            return user.name != null;
-        }
-        protected bool purchaseExists(int userId, int purchaseId)
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public bool purchaseExists(int userId, int purchaseId)
         {
             return _purchaseDAO.getPurchase(userId, purchaseId) != null;
         }
-        protected bool correctPurchase(CreatePurchaseRequest purchase)
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public bool correctPurchase(CreatePurchaseRequest purchase)
         {
-            return purchase.cost != 0 && purchase.name != null && purchase.purchaseTime != null;
+            return purchase.cost != 0 && purchase.name != null;
         }
         /// <summary>
         /// Returns all user purchases
