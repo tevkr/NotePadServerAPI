@@ -47,6 +47,8 @@ localhost:8080/api/users/{userId}/{purchaseId}
 
 ## Ссылки
 
-[Видео](https://github.com/tevkr/NotePadServerAPI/#)
+[Видео](https://drive.google.com/file/d/10ueATeOIKKSSh2JCmqt4PvzoQR1hESB6/view?usp=sharing)
 
 [Dockerhub repo](https://hub.docker.com/repository/docker/nomxd/serverapiimg)
+
+[Postman tests](https://www.getpostman.com/collections/bfcf4a9c532ce3a12a1f)
