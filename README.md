@@ -20,8 +20,6 @@ Database:
 
 ## Инструкция по запуску
 
-Подробная инструкция по запуску: какие SDK нужны, на какой ОС можно запустить и все необходимое для самостоятельного запуска вашего проекта из исходного кода
-
 Можно запустить на Windows.
 
 Нужны: [Docker Desktop](https://www.docker.com/products/docker-desktop), [Visual Studio](https://visualstudio.microsoft.com/ru/downloads/)
